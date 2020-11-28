@@ -1,45 +1,47 @@
-// import React, { Component } from 'react';
-// import axios from 'axios';
-// import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
  
-// import AddProcess from './AddProcess';
+import AddProcess from './AddProcess';
  
-// class ProjectList extends Component {
-//   state = { listOfProjects: [] }
-//   getAllProjects = () =>{
-//     axios.get(`http://localhost:5000/api/processes/private/list`)
-//     .then(responseFromApi => {
-//       this.setState({
-//         listOfProjects: responseFromApi.data
-//       })
-//     })
-//   }
+class ProcessesList extends Component {
+  state = { 
+    listOfProcesses: [] 
+    }
+  getAllProcesses = () =>{
+    axios.get(`http://localhost:5000/api/processes/private/list`)
+    .then(responseFromApi => {
+      this.setState({
+        listOfProcesses: responseFromApi.data
+      })
+    })
+  }
  
-//   componentDidMount() {
-//     this.getAllProjects();
-//   }
+  componentDidMount() {
+    this.getAllProcesses();
+  }
  
-//   render(){
-//     return(
-//       <div>
-//         <div style={{width: '60%', float:"left"}}>
-//           { this.state.listOfProjects.map( project => {
-//             return (
-//               <div key={project._id}>
-//                 <Link to={`/projects/${project._id}`}>
-//                   <h3>{project.title}</h3>
-//                 </Link>
-//                 {/* <p style={{maxWidth: '400px'}} >{project.description} </p> */}
-//               </div>
-//             )})
-//           }
-//         </div>
-//         <div style={{width: '40%', float:"right"}}>
-//             <AddProcess getData={() => this.getAllProjects()}/> {/* <== !!! */}
-//         </div>
-//       </div>
-//     )
-//   }
-// }
+  render(){
+    return(
+      <div>
+        <div style={{width: '60%', float:"left"}}>
+          { this.state.listOfProcesses.map( process => {
+            return (
+              <div key={process._id}>
+                {/* <Link to={`/process/${process._id}`}> */}
+                  <h3>{process.process_number}</h3>
+                {/* </Link> */}
+                {/* <p style={{maxWidth: '400px'}} >{project.description} </p> */}
+              </div>
+            )})
+          }
+        </div>
+        <div style={{width: '40%', float:"right"}}>
+            <AddProcess getData={() => this.getAllProcesses()}/> {/* <== !!! */}
+        </div>
+      </div>
+    )
+  }
+}
  
-// export default ProjectList;
+export default ProcessesList;
