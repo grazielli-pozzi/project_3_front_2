@@ -14,31 +14,26 @@ class AddProcess extends Component {
     // customer: [{ type: Schema.Types.ObjectId, ref: 'Customer', required: false }],
 
   state = { 
-    //   process_number: "", 
+      process_number: "", 
       description: "", 
       complainer: "", 
       claimed: "", 
-      lawyer: "",
       status: "",
-    //   creation_date: "",
-      customer: "",
      }
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    const { description, complainer, claimed, 
+    const { process_number, description, complainer, claimed, 
         lawyer, status, customer } = this.state;
-    axios.post("http://localhost:5000/api/processes/private/list", 
-    { description, complainer, claimed, lawyer, status, customer })
+    axios.post("http://localhost:5000/api/processes/private/create", 
+    { process_number, description, complainer, claimed, lawyer, status, customer })
     .then( () => {
-        // this.props.getData();
         this.setState({
+        process_number: "",  
         description: "", 
         complainer: "", 
         claimed: "", 
-        lawyer: "",
         status: "",
-        customer: ""
     });
     })
     .catch( error => console.log(error) )
@@ -53,23 +48,20 @@ class AddProcess extends Component {
     return(
       <div>
         <form onSubmit={this.handleFormSubmit}>
+          <label>Número do processo:</label>
+          <input name="process_number" value={this.state.process_number} onChange={ e => this.handleChange(e)} />
+   
           <label>Descrição:</label>
-          <input type="text" name="description" value={this.state.description} onChange={ e => this.handleChange(e)}/>
+          <textarea type="text" name="description" value={this.state.description} onChange={ e => this.handleChange(e)}/>
 
           <label>Reclamante:</label>
-          <textarea name="complainer" value={this.state.complainer} onChange={ e => this.handleChange(e)} />
+          <input name="complainer" value={this.state.complainer} onChange={ e => this.handleChange(e)} />
    
           <label>Reclamado:</label>
-          <textarea name="claimed" value={this.state.claimed} onChange={ e => this.handleChange(e)} />
-   
-          <label>Advogado:</label>
-          <textarea name="lawyer" value={this.state.lawyer} onChange={ e => this.handleChange(e)} />
+          <input name="claimed" value={this.state.claimed} onChange={ e => this.handleChange(e)} />
    
           <label>Status:</label>
-          <textarea name="status" value={this.state.status} onChange={ e => this.handleChange(e)} />
-   
-          <label>Cliente:</label>
-          <textarea name="customer" value={this.state.customer} onChange={ e => this.handleChange(e)} />
+          <input name="status" value={this.state.status} onChange={ e => this.handleChange(e)} />
    
           <input type="submit" value="Submit" />
         </form>
