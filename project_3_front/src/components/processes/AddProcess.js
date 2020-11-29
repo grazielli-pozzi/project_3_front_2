@@ -28,6 +28,7 @@ class AddProcess extends Component {
     axios.post("http://localhost:5000/api/processes/private/create", 
     { process_number, description, complainer, claimed, lawyer, status, customer })
     .then( () => {
+      this.props.getData();
         this.setState({
         process_number: "",  
         description: "", 
