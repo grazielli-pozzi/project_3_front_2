@@ -5,6 +5,7 @@ import './App.css';
 import ProcessList from '../src/components/processes/ProcessList';
 import Navbar from '../src/components/navbar/Navbar';
 import ProcessDetails from '../src/components/processes/ProcessDetails';
+import NewClient from '../src/components/clients/NewClient';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
       <div className="App">
        <Navbar />
         <Switch>
+          <Route exact path="/adv/clientes/novo-cliente" component={NewClient}/>
           <Route exact path="/processos" component={ProcessList}/>
           <Route exact path="/processo/:id" component={ProcessDetails} />
         </Switch>
