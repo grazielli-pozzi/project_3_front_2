@@ -1,9 +1,12 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 import axios from 'axios';
 
 import { Formik } from 'formik';
 
-const Signup = () => {
+const Signup = (props) => {
+
+    const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
+
     const initialValues = {
         cpf: '',
         email: '',
@@ -12,18 +15,31 @@ const Signup = () => {
         password: '',
     }
 
+    const redirectToList = () => {
+        setTimeout(() => {
+            props.history.push('/adv/clientes/lista')
+        }, 2000)
+    }
+
     const handleSubmitMethod = async (formValues) => {
         console.log(formValues);
         try {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customer/private/create`,
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customers/private/create`,
             formValues);
-        } catch (error) {
+
+            setIsSignupSuccessful(true);
+
+            redirectToList();
+        } 
+
+        catch (error) {
             console.log(error);
         }
     }
 
     return(
         <main>
+            {isSignupSuccessful && <h2>Cliente cadastrado com sucesso!</h2>}
         <h1>Cadastro de novo cliente</h1>
         <Formik initialValues={initialValues}
         onSubmit={handleSubmitMethod}

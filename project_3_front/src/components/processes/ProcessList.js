@@ -28,7 +28,7 @@ class ProcessesList extends Component {
           { this.state.listOfProcesses.map( process => {
             return (
               <div key={process._id}>
-                <Link to={`/processo/${process._id}`}>
+                <Link to={`adv/processo/${process._id}`}>
                   <h3>{process.process_number}</h3>
                 </Link>
                 <p style={{maxWidth: '400px'}} >{process.description} </p>

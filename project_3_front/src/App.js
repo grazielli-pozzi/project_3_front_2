@@ -14,8 +14,8 @@ class App extends Component {
        <Navbar />
         <Switch>
           <Route exact path="/adv/clientes/novo-cliente" component={NewClient}/>
-          <Route exact path="/processos" component={ProcessList}/>
-          <Route exact path="/processo/:id" component={ProcessDetails} />
+          <Route exact path="/adv/processos" component={ProcessList}/>
+          <Route exact path="/adv/processo/:id" component={ProcessDetails} />
         </Switch>
       </div>
     );
