@@ -1,7 +1,18 @@
 import React, { useState } from 'react'; 
 import axios from 'axios';
+import * as yup from 'yup';
 
 import { Formik } from 'formik';
+import { Form, Col, Button } from 'react-bootstrap';
+
+const schema = yup.object({
+    cpf: yup.string().min(11, 'Mínimo de 11 caracteres').required('Campo obrigatório'),
+    email: yup.string().email('Email inválido').max(100, 'Máximo de 100 caracteres').required('Campo obrigatório'),
+    name: yup.string().required('Campo obrigatório'),
+    lastname: yup.string().required('Campo obrigatório'),
+    role: yup.string().required('Campo obrigatório'),
+    password: yup.string().min(6, 'Mínimo de 6 caracteres').required('Campo obrigatório'),
+  });
 
 const Signup = (props) => {
 
@@ -12,6 +23,7 @@ const Signup = (props) => {
         email: '',
         name: '',
         lastname: '',
+        role: '',
         password: '',
     }
 
@@ -21,7 +33,7 @@ const Signup = (props) => {
         }, 2000)
     }
 
-    const handleSubmitMethod = async (formValues) => {
+    const handleSubmitMethod = async (formValues, helperMethods) => {
         console.log(formValues);
         try {
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customers/private/create`,
@@ -33,7 +45,9 @@ const Signup = (props) => {
         } 
 
         catch (error) {
-            console.log(error);
+            if(error.response.data && error.response.data.type === "Auth-signup") {
+                helperMethods.setFieldError('cpf', 'Usuário já cadastrado.'); 
+            }
         }
     }
 
@@ -43,16 +57,101 @@ const Signup = (props) => {
         <h1>Cadastro de novo cliente</h1>
         <Formik initialValues={initialValues}
         onSubmit={handleSubmitMethod}
+        validationSchema={schema}
         >
-        {(props) => (
-            <form onSubmit={props.handleSubmit}>
-                <input type="text" name="cpf" onChange={props.handleChange} value={props.values.cpf} placeholder="CPF" />
-                <input type="text" name="email" onChange={props.handleChange} value={props.values.email} placeholder="Email" />
-                <input type="text" name="name" onChange={props.handleChange} value={props.values.name} placeholder="Nome" />
-                <input type="text" name="lastname" onChange={props.handleChange} value={props.values.lastname} placeholder="Sobrenome" />
-                <input type="password" name="password" onChange={props.handleChange} value={props.values.password} placeholder="Senha" />
-                <button type="submit">Cadastrar</button>
-            </form>
+        {({
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        touched,
+        errors,
+        }) => (
+            <Form noValidate onSubmit={handleSubmit}>
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                    <Form.Label>CPF</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="cpf"
+                            value={values.cpf}
+                            onChange={handleChange}
+                            isValid={touched.cpf && !errors.cpf}
+                            isInvalid={touched.cpf && errors.cpf}
+                            onBlur={handleBlur}
+                        />
+                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{errors.cpf}</Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                    <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            isValid={touched.email && !errors.email}
+                            isInvalid={touched.email && errors.email}
+                            onBlur={handleBlur}
+                        />
+                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                    <Form.Label>Nome</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="name"
+                            value={values.name}
+                            onChange={handleChange}
+                            isValid={touched.name && !errors.name}
+                            isInvalid={touched.name && errors.name}
+                            onBlur={handleBlur}
+                        />
+                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                    <Form.Label>Sobrenome</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="lastname"
+                            value={values.lastname}
+                            onChange={handleChange}
+                            isValid={touched.lastname && !errors.lastname}
+                            isInvalid={touched.lastname && errors.lastname}
+                            onBlur={handleBlur}
+                        />
+                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{errors.lastname}</Form.Control.Feedback>
+                </Form.Group>
+
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Label>Example select</Form.Label>
+                        <Form.Control as="select">
+                        <option>advogado</option>
+                        <option>cliente</option>
+                    </Form.Control>
+                </Form.Group>
+
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                    <Form.Label>Senha</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            iisValid={touched.password && !errors.password}
+                            isInvalid={touched.password && errors.password}
+                            onBlur={handleBlur}
+                        />
+                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                </Form.Group>
+                <Button type="submit">Cadastrar</Button>
+            </Form>
         )}
         </Formik>
         </main>
