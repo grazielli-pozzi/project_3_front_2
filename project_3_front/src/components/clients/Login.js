@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Form, Col, Button } from 'react-bootstrap';
 
+import localStorageUtils from '../../utils/localStorage.utils';
+
 const schema = yup.object({
     cpf: yup.string().min(11, 'Mínimo de 11 caracteres').required('Campo obrigatório'),
     role: yup.string().required('Campo obrigatório'),
@@ -28,16 +30,20 @@ const login = (props) => {
         // }
     }
 
+    console.log(localStorageUtils.get());
+
     const handleSubmitMethod = async (formValues, helperMethods) => {
         console.log(formValues);
         try {
             
-            // await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customers/private/list`,
-            // formValues);
+            const { data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/public/login`,
+            formValues);
 
-            // setIsSignupSuccessful(true);
-
+            console.log(data);
             // redirectToLoggedArea();
+
+            localStorageUtils.set(data);
+
         } 
 
         catch (error) {
