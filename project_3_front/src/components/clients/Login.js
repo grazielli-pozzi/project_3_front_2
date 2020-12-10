@@ -21,13 +21,13 @@ const login = (props) => {
         password: '',
     }
 
-    const redirectToLoggedArea = () => {
-        // if(schema.role==='cliente') {
-        //     props.history.push('/cliente');
-        // }
-        // if(schema.role==='advogado') {
-        //     props.history.push('/adv');
-        // }
+    const redirectToLoggedArea = (data) => {
+        if(data.role==='cliente') {
+            props.history.push('/cliente');
+        }
+        if(data.role==='advogado') {
+            props.history.push('/adv');
+        }
     }
 
     console.log(localStorageUtils.get());
@@ -40,9 +40,12 @@ const login = (props) => {
             formValues);
 
             console.log(data);
-            // redirectToLoggedArea();
 
             localStorageUtils.set(data);
+
+            props.changeRole(data.role);
+
+            redirectToLoggedArea(data);
 
         } 
 
@@ -84,7 +87,7 @@ const login = (props) => {
                     <Form.Control.Feedback type="invalid">{errors.cpf}</Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                {/* <Form.Group as={Col} md="4" controlId="validationFormik01">
                     <Form.Label>Classe</Form.Label>
                         <Form.Control
                             type="text"
@@ -97,7 +100,7 @@ const login = (props) => {
                         />
                     <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Form.Group as={Col} md="4" controlId="validationFormik01">
                     <Form.Label>Senha</Form.Label>
