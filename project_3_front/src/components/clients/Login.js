@@ -9,7 +9,7 @@ import localStorageUtils from '../../utils/localStorage.utils';
 
 const schema = yup.object({
     cpf: yup.string().min(11, 'Mínimo de 11 caracteres').required('Campo obrigatório'),
-    role: yup.string().required('Campo obrigatório'),
+    // role: yup.string().required('Campo obrigatório'),
     password: yup.string().min(6, 'Mínimo de 6 caracteres').required('Campo obrigatório'),
   });
 
@@ -17,7 +17,7 @@ const login = (props) => {
 
     const initialValues = {
         cpf: '',
-        role: '',
+        // role: '',
         password: '',
     }
 
@@ -86,8 +86,8 @@ const login = (props) => {
                     <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">{errors.cpf}</Form.Control.Feedback>
                 </Form.Group>
-
-                {/* <Form.Group as={Col} md="4" controlId="validationFormik01">
+{/* 
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
                     <Form.Label>Classe</Form.Label>
                         <Form.Control
                             type="text"

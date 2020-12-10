@@ -45,6 +45,7 @@ const Signup = (props) => {
         } 
 
         catch (error) {
+            console.log(error);
             if(error.response.data && error.response.data.type === "Auth-signup") {
                 helperMethods.setFieldError('cpf', 'Usuário já cadastrado.'); 
             }
@@ -68,6 +69,7 @@ const Signup = (props) => {
         errors,
         }) => (
             <Form noValidate onSubmit={handleSubmit}>
+                { console.log(errors) }
                 <Form.Group as={Col} md="4" controlId="validationFormik01">
                     <Form.Label>CPF</Form.Label>
                         <Form.Control
@@ -130,9 +132,10 @@ const Signup = (props) => {
 
                 <Form.Group controlId="exampleForm.ControlSelect1">
                     <Form.Label>Example select</Form.Label>
-                        <Form.Control as="select">
-                        <option>advogado</option>
-                        <option>cliente</option>
+                        <Form.Control onChange={handleChange} as="select" name="role">
+                        <option value="">Selecione</option>
+                        <option value="advogado">advogado</option>
+                        <option value="cliente">cliente</option>
                     </Form.Control>
                 </Form.Group>
 
