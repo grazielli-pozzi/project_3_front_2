@@ -1,15 +1,14 @@
 class LocalStorageUtils {
     set(dataFromAPI) {
-        localStorage.setItem("token", dataFromAPI.token);
-        localStorage.setItem("role", dataFromAPI.role);
+        localStorage.setItem("info", JSON.stringify(dataFromAPI));
     }
 
     get() {
-        return localStorage.getItem("token");
+        return JSON.parse(localStorage.getItem("info"));
     }
 
     delete() {
-        localStorage.removeItem("token");
+        localStorage.removeItem("info");
     }
 }
 

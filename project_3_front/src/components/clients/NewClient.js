@@ -5,6 +5,8 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { Form, Col, Button } from 'react-bootstrap';
 
+import localStorageUtils from '../../utils/localStorage.utils';
+
 const schema = yup.object({
     cpf: yup.string().min(11, 'Mínimo de 11 caracteres').required('Campo obrigatório'),
     email: yup.string().email('Email inválido').max(100, 'Máximo de 100 caracteres').required('Campo obrigatório'),
@@ -35,9 +37,10 @@ const Signup = (props) => {
 
     const handleSubmitMethod = async (formValues, helperMethods) => {
         console.log(formValues);
+        const tokenObject = localStorageUtils.get();
         try {
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/customers/private/create`,
-            formValues);
+            formValues, { headers: {Authorization: `Bearer ${tokenObject.token}` }});
 
             setIsSignupSuccessful(true);
 

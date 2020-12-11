@@ -22,7 +22,9 @@ const login = (props) => {
     }
 
     const redirectToLoggedArea = (data) => {
+        console.log(data);
         if(data.role==='cliente') {
+            console.log(props);
             props.history.push('/cliente');
         }
         if(data.role==='advogado') {
@@ -50,6 +52,7 @@ const login = (props) => {
         } 
 
         catch (error) {
+            console.log(error);
             // if(error.response.data && error.response.data.type === "Auth-signup") {
             //     helperMethods.setFieldError('cpf', 'Usuário já cadastrado.'); 
             // }
@@ -86,21 +89,6 @@ const login = (props) => {
                     <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">{errors.cpf}</Form.Control.Feedback>
                 </Form.Group>
-{/* 
-                <Form.Group as={Col} md="4" controlId="validationFormik01">
-                    <Form.Label>Classe</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="role"
-                            value={values.role}
-                            onChange={handleChange}
-                            isValid={touched.role && !errors.role}
-                            isInvalid={touched.role && errors.role}
-                            onBlur={handleBlur}
-                        />
-                    <Form.Control.Feedback>Campo okay</Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">{errors.role}</Form.Control.Feedback>
-                </Form.Group> */}
 
                 <Form.Group as={Col} md="4" controlId="validationFormik01">
                     <Form.Label>Senha</Form.Label>

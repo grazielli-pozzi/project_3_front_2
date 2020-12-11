@@ -3,18 +3,28 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
  
 import AddProcess from './AddProcess';
+import localStorageUtils from '../../utils/localStorage.utils';
  
 class ProcessesList extends Component {
   state = { 
     listOfProcesses: [] 
     }
-  getAllProcesses = () =>{
-    axios.get(`http://localhost:5000/api/processes/private/list`)
+  getAllProcesses = () => {
+    const tokenObject = localStorageUtils.get();
+    axios.get(
+      `http://localhost:5000/api/processes/private/list`, 
+      { headers: {Authorization: `Bearer ${tokenObject.token}` }})
     .then(responseFromApi => {
       this.setState({
         listOfProcesses: responseFromApi.data
       })
-    })
+    }).catch(error => {
+      if(error.response.data && error.response.data.status === 401) {
+        localStorageUtils.delete();
+
+        this.props.history.push('/login');
+      }
+    });
   }
  
   componentDidMount() {
