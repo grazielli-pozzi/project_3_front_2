@@ -26,6 +26,7 @@ const navbar = (props) => {
       <>
       <li><Link to="/" style={{ textDecoration: 'none' }}>Página inicial</Link></li>
       <li><Link to="/login" style={{ textDecoration: 'none' }}>Login</Link></li>
+      <li><Link to="/blog" style={{ textDecoration: 'none' }}>Blog</Link></li>
       </>
     )}
  

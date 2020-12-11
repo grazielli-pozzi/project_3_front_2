@@ -8,6 +8,8 @@ import ProcessDetails from '../src/components/processes/ProcessDetails';
 import NewClient from '../src/components/clients/NewClient';
 import Login from '../src/components/clients/Login';
 import Dashboard from './components/clients/Dashboard';
+import Footer from './components/general/Footer';
+import HomePage from './components/general/HomePage';
 
 import localStorageUtils from '../src/utils/localStorage.utils';
 
@@ -51,7 +53,9 @@ class App extends Component {
           {(isUserLogged && role==='advogado') ? <Route exact path="/adv/processo/:id" component={ProcessDetails} /> : <Redirect to="/login"/>}
           {(isUserLogged && role==='advogado') ? <Route exact path="/adv" component={Dashboard} /> : <Redirect to="/login"/>}
           {(isUserLogged && role==='cliente') ? <Route exact path="/cliente" component={Dashboard} /> : <Redirect to="/"/>}
+          <Route exact path="/" component={HomePage} />
          </Switch>
+        <Footer />
       </div>
     );
   }
