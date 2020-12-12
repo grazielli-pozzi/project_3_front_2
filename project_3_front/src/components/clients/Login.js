@@ -24,11 +24,11 @@ const login = (props) => {
     const redirectToLoggedArea = (data) => {
         console.log(data);
         if(data.role==='cliente') {
-            console.log(props);
+            console.log('Teste 2');
             props.history.push('/cliente');
         }
         if(data.role==='advogado') {
-            props.history.push('/adv');
+            props.history.push('/adv/clientes/novo-cliente');
         }
     }
 

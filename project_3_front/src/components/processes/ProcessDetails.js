@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import EditProcess from './EditProcess';
+
+import localStorageUtils from '../../utils/localStorage.utils';
  
 class ProcessDetails extends Component {
   state = {}
@@ -36,8 +38,12 @@ class ProcessDetails extends Component {
     .then( () =>{
         this.props.history.push('/processes');         
     })
-    .catch((err)=>{
-        console.log(err)
+    .catch((error)=>{
+      if(error.response.data && error.response.data.status === 401) {
+        localStorageUtils.delete();
+
+        this.props.history.push('/login');
+      }
     })
   }
  

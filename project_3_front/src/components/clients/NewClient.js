@@ -31,7 +31,7 @@ const Signup = (props) => {
 
     const redirectToList = () => {
         setTimeout(() => {
-            props.history.push('/adv/clientes/lista')
+            props.history.push('/adv/clientes');
         }, 2000)
     }
 
@@ -52,6 +52,12 @@ const Signup = (props) => {
             if(error.response.data && error.response.data.type === "Auth-signup") {
                 helperMethods.setFieldError('cpf', 'Usuário já cadastrado.'); 
             }
+
+            if(error.response.data && error.response.data.status === 401) {
+                localStorageUtils.delete();
+        
+                this.props.history.push('/login');
+              }
         }
     }
 
