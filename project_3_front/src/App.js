@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
-import ProcessList from '../src/components/processes/ProcessList';
+import ProcessList from './components/processes-adv/ProcessList';
 import Navbar from '../src/components/navbar/Navbar';
-import ProcessDetails from '../src/components/processes/ProcessDetails';
+import ProcessDetails from './components/processes-adv/ProcessDetails';
 import NewClient from '../src/components/clients/NewClient';
 import Login from '../src/components/clients/Login';
 import DashboardClient from './components/clients/DashboardClient';
@@ -30,6 +30,10 @@ class App extends Component {
 
   }
 
+  changeUserStatus = (status) => {
+    this.setState({ isUserLogged: status });
+  }
+
   changeRole = (info) => {
     this.setState({ role: info, isUserLogged: true });
   }
@@ -43,6 +47,11 @@ class App extends Component {
     }
   }
 
+  logOut = () => {
+    this.state.role = '';
+    this.state.isUserLogged = false;
+  }
+
   render() {
     const { isUserLogged } = this.state;
     const { role } = this.state;
@@ -52,7 +61,8 @@ class App extends Component {
        <Navbar isUserLogged={isUserLogged} role={role} />
         <Switch>
 
-          <Route exact path="/" component={HomePage} />
+          <Route exact path="/" render={(props) => 
+          <HomePage {...props} changeRole={this.changeRole} />} />
 
           <Route exact path="/login" render={(props) => 
           <Login {...props} changeRole={this.changeRole} />} />
@@ -60,6 +70,7 @@ class App extends Component {
           <ProtectedLawyerRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/adv/clientes/novo-cliente" 
             component={NewClient}
           />
@@ -71,6 +82,7 @@ class App extends Component {
           <ProtectedLawyerRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/adv/processos" 
             component={ProcessList}
           />
@@ -86,6 +98,7 @@ class App extends Component {
           <ProtectedLawyerRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/adv/processo/:id" 
             component={ProcessDetails}
           />
@@ -97,6 +110,7 @@ class App extends Component {
           <ProtectedLawyerRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/adv/clientes" 
             component={ClientsList}
           />
@@ -104,6 +118,7 @@ class App extends Component {
           <ProtectedLawyerRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/adv" 
             component={DashboardAdv}
           />
@@ -115,6 +130,7 @@ class App extends Component {
           <ProtectedClientRoute 
             isUserLogged={isUserLogged} 
             role={role} 
+            changeUserStatus={this.changeUserStatus}
             exact path="/cliente" 
             component={DashboardClient}
           />

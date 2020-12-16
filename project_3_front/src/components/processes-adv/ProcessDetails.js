@@ -14,13 +14,21 @@ class ProcessDetails extends Component {
  
   getSingleProcess = () => {
     const { params } = this.props.match;
-    axios.get(`http://localhost:5000/api/processes/private/list/${params.id}`)
+
+    const tokenObject = localStorageUtils.get();
+
+    axios.get(`http://localhost:5000/api/processes/processes-adv/private/list/${params.id}`,
+    { headers: {Authorization: `Bearer ${tokenObject.token}` }})
     .then( responseFromApi =>{
       const theProcess = responseFromApi.data;
       this.setState(theProcess);
     })
-    .catch((err)=>{
-        console.log(err)
+    .catch((error) => {
+      if(error.response.data && error.response.data.status === 401) {
+        localStorageUtils.delete();
+
+        this.props.history.push('/login');
+      }
     })
   }
  

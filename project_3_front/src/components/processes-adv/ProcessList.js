@@ -6,13 +6,15 @@ import AddProcess from './AddProcess';
 import localStorageUtils from '../../utils/localStorage.utils';
  
 class ProcessesList extends Component {
+
   state = { 
     listOfProcesses: [] 
-    }
+  }
+
   getAllProcesses = () => {
     const tokenObject = localStorageUtils.get();
     axios.get(
-      `http://localhost:5000/api/processes/private/list`, 
+      `http://localhost:5000/api/processes/processes-adv/private/list`, 
       { headers: {Authorization: `Bearer ${tokenObject.token}` }})
     .then(responseFromApi => {
       this.setState({
@@ -47,7 +49,7 @@ class ProcessesList extends Component {
           }
         </div>
         <div style={{width: '40%', float:"right"}}>
-            <AddProcess getData={() => this.getAllProcesses()}/> 
+            <AddProcess history={this.props.history} getData={() => this.getAllProcesses()}/> 
         </div>
       </div>
     )

@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 
+import localStorageUtils from '../../utils/localStorage.utils';
+
 import axios from 'axios';
 
 class AddProcess extends Component {
-
-    // process_number: { type: Number, required: true },
-    // description: { type: String, required: true },
-    // complainer: { type: String, required: true },
-    // claimed: { type: String, required: true },
-    // lawyer: [{ type: Schema.Types.ObjectId, ref: 'Customer', required: false }],
-    // status: { type: String, required: true, enum: ['pendente de manifestação', 'concluso', 'prazo', 'aguardando audiência'] },
-    // creation_date: { type: Date, required: false },
-    // customer: [{ type: Schema.Types.ObjectId, ref: 'Customer', required: false }],
 
   state = { 
       process_number: "", 
@@ -19,14 +12,19 @@ class AddProcess extends Component {
       complainer: "", 
       claimed: "", 
       status: "",
+      client: "",
      }
 
   handleFormSubmit = (event) => {
     event.preventDefault();
     const { process_number, description, complainer, claimed, 
-        lawyer, status, customer } = this.state;
-    axios.post("http://localhost:5000/api/processes/private/create", 
-    { process_number, description, complainer, claimed, lawyer, status, customer })
+        lawyer, status, customer, client } = this.state;
+
+    const tokenObject = localStorageUtils.get();
+    
+    axios.post("http://localhost:5000/api/processes/processes-adv/private/create", 
+    { process_number, description, complainer, claimed, lawyer, status, customer, client }, 
+    { headers: {Authorization: `Bearer ${tokenObject.token}`} })
     .then( () => {
       this.props.getData();
         this.setState({
@@ -35,9 +33,16 @@ class AddProcess extends Component {
         complainer: "", 
         claimed: "", 
         status: "",
+        client: "",
     });
     })
-    .catch( error => console.log(error) )
+    .catch( error => {
+      if(error.response.data && error.response.data.status === 401) {
+        localStorageUtils.delete();
+
+        this.props.history.push('/login');
+    }
+  });
   }
 
   handleChange = (event) => {  
@@ -63,6 +68,9 @@ class AddProcess extends Component {
    
           <label>Status:</label>
           <input name="status" value={this.state.status} onChange={ e => this.handleChange(e)} />
+
+          <label>Cliente:</label>
+          <input name="client" value={this.state.client} onChange={ e => this.handleChange(e)} />
    
           <input type="submit" value="Submit" />
         </form>

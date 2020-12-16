@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import localStorageUtils from '../../utils/localStorage.utils';
  
 class EditProcess extends Component {
   state = {
@@ -18,13 +19,23 @@ class EditProcess extends Component {
     const status = this.state.status;
     
     event.preventDefault();
- 
-    axios.put(`http://localhost:5000/api/processes/private/update/${this.props.theProcess._id}`, { process_number, description, complainer, claimed, status })
+    
+    const tokenObject = localStorageUtils.get();
+
+    axios.put(`http://localhost:5000/api/processes/processes-adv/private/update/${this.props.theProcess._id}`, 
+    { process_number, description, complainer, claimed, status },
+    { headers: {Authorization: `Bearer ${tokenObject.token}` }})
     .then( () => {
         this.props.getTheProcess();
         this.props.history.push('/processes');    
     })
-    .catch( error => console.log(error) )
+    .catch( error => {
+      if(error.response.data && error.response.data.status === 401) {
+        localStorageUtils.delete();
+
+        this.props.history.push('/login');
+      }
+    })
   }
  
   handleChangeTitle = (event) => {  
